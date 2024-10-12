@@ -1,6 +1,8 @@
 using System;
 using System.IO;
 using System.Windows.Forms;
+using MySql.Data.MySqlClient;
+
 
 namespace Practica5._01
 {
@@ -17,10 +19,12 @@ namespace Practica5._01
             string apellidos = textBox2.Text.Trim();
             string estatura = textBox3.Text.Trim();
             string telefono = textBox4.Text.Trim();
+            string edad = textBox5.Text.Trim();
             string genero = radioButton1.Checked ? "Masculino" : radioButton2.Checked ? "Femenino" : "";
 
             if (string.IsNullOrWhiteSpace(nombre) || string.IsNullOrWhiteSpace(apellidos) ||
-                string.IsNullOrWhiteSpace(estatura) || string.IsNullOrWhiteSpace(telefono) || string.IsNullOrWhiteSpace(genero))
+                string.IsNullOrWhiteSpace(estatura) || string.IsNullOrWhiteSpace(telefono) ||
+                string.IsNullOrWhiteSpace(edad) || string.IsNullOrWhiteSpace(genero))
             {
                 MessageBox.Show("Todos los campos son obligatorios.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
@@ -32,13 +36,13 @@ namespace Practica5._01
                 return;
             }
 
-            if (!IsNumeric(estatura) || !IsNumeric(telefono))
+            if (!IsNumeric(estatura) || !IsNumeric(telefono) || !IsNumeric(edad))
             {
-                MessageBox.Show("La estatura y el teléfono deben ser valores numéricos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("La estatura, el teléfono y la edad deben ser valores numéricos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            string datosCompletos = $"Nombre: {nombre} {apellidos} ({estatura} cm) - Teléfono: {telefono} - Género: {genero}";
+            string datosCompletos = $"Nombre: {nombre} {apellidos} ({estatura} cm) - Teléfono: {telefono} - Edad: {edad} años - Género: {genero}";
             GuardarEnArchivo(datosCompletos);
             MostrarDatosVentana(datosCompletos);
         }
@@ -98,13 +102,18 @@ namespace Practica5._01
                 Text = "Cerrar",
                 Location = new System.Drawing.Point(150, 120)
             };
+
             btnCerrar.Click += (s, args) => ventanaDatos.Close();
             ventanaDatos.Controls.Add(btnCerrar);
 
             ventanaDatos.ShowDialog();
         }
 
-        private void button2_Click(object sender, EventArgs e) { }
+        private void button2_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
         private void label1_Click(object sender, EventArgs e) { }
         private void textBox1_TextChanged(object sender, EventArgs e) { }
         private void label2_Click(object sender, EventArgs e) { }
@@ -115,5 +124,13 @@ namespace Practica5._01
         private void textBox4_TextChanged(object sender, EventArgs e) { }
         private void radioButton1_CheckedChanged(object sender, EventArgs e) { }
         private void radioButton2_CheckedChanged(object sender, EventArgs e) { }
+        private void label5_Click(object sender, EventArgs e) { }
+        private void textBox5_TextChanged(object sender, EventArgs e) { }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
+
